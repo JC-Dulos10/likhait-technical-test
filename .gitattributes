@@ -1,1 +1,1 @@
-backend/bin/docker-entrypoint text eol=lf
+backend/bin/* text eol=lf
