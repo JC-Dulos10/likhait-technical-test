@@ -1,5 +1,6 @@
 class Api::ExpensesController < ApplicationController
   def index
+    #added date: desc to order it by the latest date and latest created
     expenses = Expense.includes(:category).order(date: :desc, created_at: :desc)
 
     if params[:year].present? && params[:month].present?
@@ -9,7 +10,8 @@ class Api::ExpensesController < ApplicationController
       start_date = Date.new(year, month, 1)
       end_date = start_date.end_of_month
 
-      expenses = expenses.where(date: start_date...end_date)
+      #changed the created_at to date so it will filter by the date of the expense instead of the created_at timestamp
+      expenses = expenses.where(date: start_date..end_date)
     end
 
     render json: expenses.map { |expense| format_expense(expense) }
