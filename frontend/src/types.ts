@@ -19,6 +19,14 @@ export interface ExpenseFormData {
   date: string;
 }
 
+// [FEATURE-001] Category interface for dynamic category management from API
+export interface Category {
+  id: number;
+  name: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface MonthlySummary {
   totalExpenses: number;
   categoryBreakdown: CategoryBreakdown[];

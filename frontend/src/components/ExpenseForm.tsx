@@ -1,10 +1,10 @@
 /**
  * Form component for adding/editing expenses
+ * [FEATURE-001] Now accepts categories prop instead of using hardcoded EXPENSE_CATEGORIES
  */
 
 import React from "react";
-import { ExpenseFormData } from "../types";
-import { EXPENSE_CATEGORIES } from "../constants/categories";
+import { ExpenseFormData, Category } from "../types";
 import { TextField, SelectBox, Button } from "../vibes";
 import { useExpenseForm } from "../hooks/useExpenseForm";
 
@@ -13,6 +13,8 @@ interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
+  // [FEATURE-001] Dynamic categories from API instead of hardcoded constants
+  categories?: Category[];
 }
 
 export function ExpenseForm({
@@ -20,6 +22,8 @@ export function ExpenseForm({
   onSubmit,
   onCancel,
   submitLabel = "Add Expense",
+  // [FEATURE-001] Default to empty array if no categories provided
+  categories = [],
 }: ExpenseFormProps) {
   const { formData, errors, isSubmitting, handleChange, handleSubmit } =
     useExpenseForm({
@@ -39,9 +43,10 @@ export function ExpenseForm({
     marginTop: "0.5rem",
   };
 
-  const categoryOptions = EXPENSE_CATEGORIES.map((category) => ({
-    value: category,
-    label: category,
+  // [FEATURE-001] Build options from dynamic categories list instead of hardcoded EXPENSE_CATEGORIES
+  const categoryOptions = categories.map((category) => ({
+    value: category.name,
+    label: category.name,
   }));
 
   return (
