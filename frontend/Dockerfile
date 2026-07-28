@@ -1,18 +1,19 @@
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Remove lockfile to avoid cross-platform optional dependency resolution issues
+# The package-lock.json was generated on Windows and npm has a known bug
+# where platform-specific optional deps (like @rollup/rollup-linux-x64-gnu for Linux)
+# are not properly installed from the Windows-generated lockfile.
+# See: https://github.com/npm/cli/issues/4828
+RUN rm -f package-lock.json && npm install
 
-# Copy the rest of the application
 COPY . .
 
-# Expose port
 EXPOSE 5173
 
-# Start the development server
 CMD ["npm", "run", "dev", "--", "--host"]
+

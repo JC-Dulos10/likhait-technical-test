@@ -7,6 +7,10 @@
 # Ignore bundler config.
 /.bundle
 
+# Added bundle inside the /backend/vendor so it won't be included in the git repo. This is to avoid issues with different versions of gems on different machines.
+/backend/vendor/bundle
+
+
 # Ignore all logfiles and tempfiles.
 /backend/log/*
 /backend/tmp/*
