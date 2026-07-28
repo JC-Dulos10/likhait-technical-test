@@ -7,6 +7,7 @@ import React from "react";
 import { ExpenseFormData, Category } from "../types";
 import { TextField, SelectBox, Button } from "../vibes";
 import { useExpenseForm } from "../hooks/useExpenseForm";
+import { formatDate } from "../utils/expenseUtils";
 
 interface ExpenseFormProps {
   initialData?: Partial<ExpenseFormData>;
@@ -25,6 +26,8 @@ export function ExpenseForm({
   // [FEATURE-001] Default to empty array if no categories provided
   categories = [],
 }: ExpenseFormProps) {
+  // [BONUS-001] Limit the native date picker to today and earlier dates.
+  const today = formatDate(new Date());
   const { formData, errors, isSubmitting, handleChange, handleSubmit } =
     useExpenseForm({
       initialData,
@@ -87,6 +90,7 @@ export function ExpenseForm({
       <TextField
         label="Date"
         type="date"
+        max={today}
         value={formData.date}
         onChange={(e) => handleChange("date", e.target.value)}
         error={errors.date}

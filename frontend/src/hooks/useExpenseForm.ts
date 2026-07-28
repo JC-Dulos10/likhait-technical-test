@@ -12,11 +12,13 @@ interface UseExpenseFormProps {
 }
 
 export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
+  // [BONUS-001] Use the local calendar date as the latest permitted expense date.
+  const today = formatDate(new Date());
   const [formData, setFormData] = useState<ExpenseFormData>({
     amount: initialData?.amount || "",
     description: initialData?.description || "",
     category: initialData?.category || "",
-    date: initialData?.date || formatDate(new Date()),
+    date: initialData?.date || today,
   });
 
   const [errors, setErrors] = useState<Partial<ExpenseFormData>>({});
@@ -47,6 +49,9 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
 
     if (!formData.date) {
       newErrors.date = "Date is required";
+    } else if (formData.date > formatDate(new Date())) {
+      // [BONUS-001] Guard against manually entered dates that bypass the date picker limit.
+      newErrors.date = "Expense date cannot be in the future. Choose today or an earlier date.";
     }
 
     setErrors(newErrors);
@@ -68,7 +73,7 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
         amount: "",
         description: "",
         category: "",
-        date: formatDate(new Date()),
+        date: today,
       });
       setErrors({});
     } catch (error) {
@@ -83,7 +88,7 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
       amount: initialData?.amount || "",
       description: initialData?.description || "",
       category: initialData?.category || "",
-      date: initialData?.date || formatDate(new Date()),
+      date: initialData?.date || today,
     });
     setErrors({});
   };
