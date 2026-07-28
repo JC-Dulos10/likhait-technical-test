@@ -13,7 +13,8 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   namespace :api do
-    resources :categories, only: [ :index ]
+    # [FEATURE-001] Added :create to allow users to create custom categories via UI
+    resources :categories, only: [ :index, :create ]
     resources :expenses, only: [ :index, :create, :update, :destroy ]
   end
 end

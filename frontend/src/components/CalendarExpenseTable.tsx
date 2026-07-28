@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from "react";
-import { Expense, ExpenseFormData } from "../types";
+import { Category, Expense, ExpenseFormData } from "../types";
 import { formatCurrency, formatDate } from "../utils/expenseUtils";
 import { getCategoryEmoji } from "../constants/categoryEmojis";
 import { COLORS } from "../constants/colors";
@@ -14,6 +14,8 @@ import { deleteExpense, updateExpense } from "../services/api";
 interface CalendarExpenseTableProps {
   expenses: Expense[];
   onExpenseUpdated: () => void;
+  // [FEATURE-001] Dynamic categories for the edit expense form
+  categories?: Category[];
 }
 
 const ITEMS_PER_PAGE = 10;
@@ -21,6 +23,7 @@ const ITEMS_PER_PAGE = 10;
 export function CalendarExpenseTable({
   expenses,
   onExpenseUpdated,
+  categories,
 }: CalendarExpenseTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -200,6 +203,7 @@ export function CalendarExpenseTable({
               setEditingExpense(null);
             }}
             submitLabel="Update Expense"
+            categories={categories}
           />
         )}
       </Modal>
